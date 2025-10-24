@@ -173,34 +173,40 @@ window.editProduct = function(firestoreId) {
 window.deleteProduct = function(firestoreId) {
     console.log('Función deleteProduct llamada con ID:', firestoreId);
     
-    showModal(
-        'Confirmar Eliminación',
-        '¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.',
-        async () => {
-            try {
-                const products = getCurrentProducts();
-                const product = products.find(p => p.firestoreId === firestoreId);
-                
-                if (product) {
-                    // Eliminar archivos asociados
-                    if (product.img) {
-                        await deleteFile(product.img);
+    try {
+        showModal(
+            'Confirmar Eliminación',
+            '¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.',
+            async () => {
+                try {
+                    console.log('Confirmación de eliminación recibida');
+                    const products = getCurrentProducts();
+                    const product = products.find(p => p.firestoreId === firestoreId);
+                    
+                    if (product) {
+                        // Eliminar archivos asociados
+                        if (product.img) {
+                            await deleteFile(product.img);
+                        }
+                        if (product.videos) {
+                            await deleteFile(product.videos);
+                        }
                     }
-                    if (product.videos) {
-                        await deleteFile(product.videos);
-                    }
+                    
+                    // Eliminar de la base de datos
+                    await deleteProductFromDB(firestoreId);
+                    showNotification('Producto eliminado exitosamente');
+                    
+                } catch (error) {
+                    console.error('Error eliminando producto:', error);
+                    showNotification('Error eliminando producto: ' + error.message, 'error');
                 }
-                
-                // Eliminar de la base de datos
-                await deleteProductFromDB(firestoreId);
-                showNotification('Producto eliminado exitosamente');
-                
-            } catch (error) {
-                console.error('Error eliminando producto:', error);
-                showNotification('Error eliminando producto: ' + error.message, 'error');
             }
-        }
-    );
+        );
+    } catch (error) {
+        console.error('Error mostrando modal:', error);
+        showNotification('Error mostrando modal de confirmación', 'error');
+    }
 };
 
 // Función para configurar manejadores de imágenes

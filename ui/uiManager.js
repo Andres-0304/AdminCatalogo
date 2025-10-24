@@ -84,40 +84,59 @@ export function createProductCard(product) {
 
 // Función para mostrar modal de confirmación
 export function showModal(title, message, confirmCallback, cancelCallback) {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <h3>${title}</h3>
-            <p>${message}</p>
-            <div class="modal-actions">
-                <button class="btn btn-cancel" onclick="hideModal()">Cancelar</button>
-                <button class="btn btn-confirm" onclick="confirmAction()">Confirmar</button>
-            </div>
-        </div>
-    `;
+    console.log('Función showModal llamada:', { title, message });
     
-    document.body.appendChild(modal);
+    const modal = document.getElementById('confirmModal');
+    const modalTitle = modal ? modal.querySelector('h3') : null;
+    const modalMessage = document.getElementById('confirmMessage');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const cancelBtn = document.getElementById('cancelModalBtn');
     
-    // Configurar callbacks
-    window.confirmAction = () => {
-        if (confirmCallback) confirmCallback();
-        hideModal();
-    };
+    console.log('Elementos del modal encontrados:', {
+        modal: !!modal,
+        modalTitle: !!modalTitle,
+        modalMessage: !!modalMessage,
+        confirmBtn: !!confirmBtn,
+        cancelBtn: !!cancelBtn
+    });
     
-    window.hideModal = () => {
-        if (cancelCallback) cancelCallback();
-        document.body.removeChild(modal);
-        delete window.confirmAction;
-        delete window.hideModal;
-    };
+    if (modal && modalTitle && modalMessage && confirmBtn && cancelBtn) {
+        // Configurar contenido del modal
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        
+        // Mostrar modal
+        modal.style.display = 'block';
+        console.log('Modal mostrado');
+        
+        // Configurar callbacks
+        const handleConfirm = () => {
+            if (confirmCallback) confirmCallback();
+            hideModal();
+        };
+        
+        const handleCancel = () => {
+            if (cancelCallback) cancelCallback();
+            hideModal();
+        };
+        
+        // Remover event listeners anteriores
+        confirmBtn.removeEventListener('click', handleConfirm);
+        cancelBtn.removeEventListener('click', handleCancel);
+        
+        // Agregar nuevos event listeners
+        confirmBtn.addEventListener('click', handleConfirm);
+        cancelBtn.addEventListener('click', handleCancel);
+    } else {
+        console.error('No se pudieron encontrar todos los elementos del modal');
+    }
 }
 
 // Función para ocultar modal
 export function hideModal() {
-    const modal = document.querySelector('.modal');
+    const modal = document.getElementById('confirmModal');
     if (modal) {
-        document.body.removeChild(modal);
+        modal.style.display = 'none';
     }
 }
 
