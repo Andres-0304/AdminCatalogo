@@ -27,24 +27,11 @@ export function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
-    const videoIndicator = product.videos ? `
-        <div class="video-indicator">
-            <video controls style="max-width: 100%; max-height: 200px; border-radius: 6px; margin-top: 10px;">
-                <source src="${product.videos}" type="video/mp4">
-                <source src="${product.videos}" type="video/webm">
-                <source src="${product.videos}" type="video/ogg">
-                Tu navegador no soporta el elemento video.
-            </video>
-            <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">
-                <a href="${product.videos}" target="_blank" style="color: #3498db; text-decoration: none;">Abrir video en nueva pestaña</a>
-            </p>
-        </div>
-    ` : '';
+    // Crear galería unificada (imagen y video en el mismo espacio)
+    let mediaContent = '';
+    console.log('Producto:', product.nombre, 'Imagen URL:', product.img, 'Video URL:', product.videos);
     
-    // Mostrar imagen del producto
-    let imageContent;
-    console.log('Producto:', product.nombre, 'Imagen URL:', product.img);
-    
+    // Priorizar imagen si existe, sino mostrar video
     if (product.img && product.img.trim() !== '') {
         // Convertir URLs antiguas a nuevas si es necesario
         let imageUrl = product.img;
@@ -56,34 +43,56 @@ export function createProductCard(product) {
             console.log('URL convertida:', imageUrl);
         }
         
-        imageContent = `
-            <div class="image-container">
-                <div class="image-loading">Cargando imagen...</div>
-                <img src="${imageUrl}" alt="${product.nombre}" class="product-image" loading="lazy" 
-                     onload="handleImageLoad(this)" 
-                     onerror="handleImageError(this, '${imageUrl}')"
-                     data-original-url="${imageUrl}"
-                     onloadstart="setupImageTimeout(this)">
+        mediaContent = `
+            <div class="media-item">
+                <div class="image-container">
+                    <div class="image-loading">Cargando imagen...</div>
+                    <img src="${imageUrl}" alt="${product.nombre}" class="product-image" loading="lazy" 
+                         onload="handleImageLoad(this)" 
+                         onerror="handleImageError(this, '${imageUrl}')"
+                         data-original-url="${imageUrl}"
+                         onloadstart="setupImageTimeout(this)">
+                </div>
+                ${product.videos && product.videos.trim() !== '' ? `
+                    <div class="media-indicator">
+                        <span class="media-badge">VIDEO</span>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    } else if (product.videos && product.videos.trim() !== '') {
+        mediaContent = `
+            <div class="media-item">
+                <div class="video-container">
+                    <video controls class="product-video">
+                        <source src="${product.videos}" type="video/mp4">
+                        <source src="${product.videos}" type="video/webm">
+                        <source src="${product.videos}" type="video/ogg">
+                        Tu navegador no soporta el elemento video.
+                    </video>
+                </div>
             </div>
         `;
     } else {
-        imageContent = `
-            <div style="width: 100%; height: 200px; border: 1px solid #e9ecef; border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #f8f9fa;">
-                <div style="color: #6c757d; font-size: 3rem; margin-bottom: 10px;">🖼️</div>
-                <div style="color: #6c757d; font-weight: 500; text-align: center;">Sin imagen</div>
+        // Si no hay imagen ni video, mostrar placeholder
+        mediaContent = `
+            <div class="media-placeholder">
+                <div class="placeholder-icon">IMG</div>
+                <div class="placeholder-text">Sin medios</div>
             </div>
         `;
     }
     
     card.innerHTML = `
-        ${imageContent}
+        <div class="product-media-gallery">
+            ${mediaContent}
+        </div>
         <div class="product-info">
             <h3 class="product-name">${product.nombre}</h3>
             <p class="product-id">ID: ${product.id}</p>
             <p class="product-price">${product.precio || 'S/. 0.00'}</p>
             <p class="product-desc">${product.desc}</p>
             <p class="product-includes">Incluye: ${product.incluye}</p>
-            ${videoIndicator}
             <div class="product-actions">
                 <button class="btn btn-edit" onclick="editProduct('${product.firestoreId}')">Editar</button>
                 <button class="btn btn-delete" onclick="deleteProduct('${product.firestoreId}')">Eliminar</button>
