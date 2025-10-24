@@ -27,50 +27,59 @@ export function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
-    // Crear galería unificada (imagen y video en el mismo espacio)
+    // Crear minigaleria deslizable
     let mediaContent = '';
     console.log('Producto:', product.nombre, 'Imagen URL:', product.img, 'Video URL:', product.videos);
     
-    // Priorizar imagen si existe, sino mostrar video
-    if (product.img && product.img.trim() !== '') {
-        // Convertir URLs antiguas a nuevas si es necesario
-        let imageUrl = product.img;
-        if (imageUrl.includes('14260027a130bb3910678a34f010dcb7.r2.cloudflarestorage.com') || 
-            imageUrl.includes('pub-servilletas-navidenas.r2.dev')) {
-            // Convertir URL antigua a nueva
-            const fileName = imageUrl.split('/').pop();
-            imageUrl = `https://pub-8abbc2a107f14bacaecfca417d47cfb3.r2.dev/images/${fileName}`;
-            console.log('URL convertida:', imageUrl);
+    const hasImage = product.img && product.img.trim() !== '';
+    const hasVideo = product.videos && product.videos.trim() !== '';
+    
+    if (hasImage || hasVideo) {
+        let imageUrl = '';
+        if (hasImage) {
+            imageUrl = product.img;
+            if (imageUrl.includes('14260027a130bb3910678a34f010dcb7.r2.cloudflarestorage.com') || 
+                imageUrl.includes('pub-servilletas-navidenas.r2.dev')) {
+                const fileName = imageUrl.split('/').pop();
+                imageUrl = `https://pub-8abbc2a107f14bacaecfca417d47cfb3.r2.dev/images/${fileName}`;
+                console.log('URL convertida:', imageUrl);
+            }
         }
         
         mediaContent = `
-            <div class="media-item">
-                <div class="image-container">
-                    <div class="image-loading">Cargando imagen...</div>
-                    <img src="${imageUrl}" alt="${product.nombre}" class="product-image" loading="lazy" 
-                         onload="handleImageLoad(this)" 
-                         onerror="handleImageError(this, '${imageUrl}')"
-                         data-original-url="${imageUrl}"
-                         onloadstart="setupImageTimeout(this)">
+            <div class="mini-gallery">
+                <div class="gallery-container">
+                    ${hasImage ? `
+                        <div class="gallery-slide">
+                            <div class="image-container">
+                                <div class="image-loading">Cargando imagen...</div>
+                                <img src="${imageUrl}" alt="${product.nombre}" class="product-image" loading="lazy" 
+                                     onload="handleImageLoad(this)" 
+                                     onerror="handleImageError(this, '${imageUrl}')"
+                                     data-original-url="${imageUrl}"
+                                     onloadstart="setupImageTimeout(this)">
+                            </div>
+                        </div>
+                    ` : ''}
+                    ${hasVideo ? `
+                        <div class="gallery-slide">
+                            <div class="video-container">
+                                <video controls class="product-video">
+                                    <source src="${product.videos}" type="video/mp4">
+                                    <source src="${product.videos}" type="video/webm">
+                                    <source src="${product.videos}" type="video/ogg">
+                                    Tu navegador no soporta el elemento video.
+                                </video>
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
-                ${product.videos && product.videos.trim() !== '' ? `
-                    <div class="media-indicator">
-                        <span class="media-badge">VIDEO</span>
+                ${(hasImage && hasVideo) ? `
+                    <div class="gallery-dots">
+                        <span class="dot active" data-slide="0"></span>
+                        <span class="dot" data-slide="1"></span>
                     </div>
                 ` : ''}
-            </div>
-        `;
-    } else if (product.videos && product.videos.trim() !== '') {
-        mediaContent = `
-            <div class="media-item">
-                <div class="video-container">
-                    <video controls class="product-video">
-                        <source src="${product.videos}" type="video/mp4">
-                        <source src="${product.videos}" type="video/webm">
-                        <source src="${product.videos}" type="video/ogg">
-                        Tu navegador no soporta el elemento video.
-                    </video>
-                </div>
             </div>
         `;
     } else {
@@ -99,6 +108,50 @@ export function createProductCard(product) {
             </div>
         </div>
     `;
+    
+    // Agregar funcionalidad de deslizar si hay múltiples medios
+    if (hasImage && hasVideo) {
+        const galleryContainer = card.querySelector('.gallery-container');
+        const dots = card.querySelectorAll('.dot');
+        let currentSlide = 0;
+        
+        // Función para cambiar slide
+        const goToSlide = (slideIndex) => {
+            currentSlide = slideIndex;
+            galleryContainer.style.transform = `translateX(-${slideIndex * 50}%)`;
+            
+            // Actualizar dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === slideIndex);
+            });
+        };
+        
+        // Event listeners para dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+        
+        // Touch/swipe support
+        let startX = 0;
+        let endX = 0;
+        
+        galleryContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+        
+        galleryContainer.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > 50) { // Swipe threshold
+                if (diff > 0 && currentSlide < 1) {
+                    goToSlide(currentSlide + 1);
+                } else if (diff < 0 && currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        });
+    }
     
     return card;
 }
