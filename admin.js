@@ -8,12 +8,6 @@ let currentEditingProduct = null;
 
 // Verificar autenticación al cargar la página
 document.addEventListener('DOMContentLoaded', async function() {
-    // Verificar si el usuario está autenticado
-    const isAuthenticated = await authService.requireAuth();
-    if (!isAuthenticated) {
-        return; // La función requireAuth ya redirige al login
-    }
-    
     // Mostrar información del usuario
     const userEmail = document.getElementById('userEmail');
     if (userEmail) {

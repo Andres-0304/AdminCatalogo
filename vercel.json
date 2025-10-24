@@ -1,5 +1,15 @@
 {
   "version": 2,
   "buildCommand": "echo 'No build step required'",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/login.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/index.html"
+    }
+  ]
 }

@@ -174,8 +174,8 @@
                     localStorage.setItem('authToken', result.token);
                     localStorage.setItem('userEmail', result.user.email);
                     
-                    // Redirigir al panel
-                    window.location.href = '/index.html';
+                    // Redirigir al panel de administración
+                    window.location.href = '/admin';
                 } else {
                     showError(result.error || 'Error en la autenticación');
                 }
@@ -205,7 +205,7 @@
                 .then(response => response.json())
                 .then(result => {
                     if (result.success) {
-                        window.location.href = '/index.html';
+                        window.location.href = '/admin';
                     } else {
                         localStorage.removeItem('authToken');
                         localStorage.removeItem('userEmail');

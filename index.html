@@ -105,6 +105,48 @@
 
     <!-- Firebase SDK -->
     <script src="js/authService.js"></script>
+    <script>
+        // Verificar autenticación antes de cargar el panel
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('authToken');
+            
+            if (!token) {
+                // No hay token, redirigir al login
+                window.location.href = '/login.html';
+                return;
+            }
+            
+            // Verificar si el token sigue siendo válido
+            try {
+                const response = await fetch('/api/verify', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    // Token inválido, redirigir al login
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userEmail');
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                // Token válido, continuar cargando el panel
+                console.log('Usuario autenticado:', result.user.email);
+                
+            } catch (error) {
+                console.error('Error verificando token:', error);
+                // Error verificando token, redirigir al login
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userEmail');
+                window.location.href = '/login.html';
+                return;
+            }
+        });
+    </script>
     <script type="module" src="admin.js"></script>
 </body>
 </html>
