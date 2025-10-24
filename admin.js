@@ -60,8 +60,8 @@ function setupEventListeners() {
     }
     
     // Event listeners para previews
-    const imageInput = document.getElementById('imagen');
-    const videoInput = document.getElementById('videos');
+    const imageInput = document.getElementById('productImage');
+    const videoInput = document.getElementById('productVideo');
     
     if (imageInput) {
         imageInput.addEventListener('change', handleFileChange);
@@ -146,12 +146,24 @@ async function handleFormSubmit(e) {
 
 // Función para manejar cambio de archivos
 function handleFileChange(e) {
+    console.log('handleFileChange ejecutado');
     const file = e.target.files[0];
-    if (!file) return;
+    if (!file) {
+        console.log('No hay archivo seleccionado');
+        return;
+    }
+    
+    console.log('Archivo seleccionado:', file.name, file.size, file.type);
     
     const fieldName = e.target.name;
     const infoElement = document.getElementById(fieldName + 'Info');
     const previewElement = document.getElementById(fieldName + 'Preview');
+    
+    console.log('Elementos encontrados:', {
+        fieldName,
+        infoElement: !!infoElement,
+        previewElement: !!previewElement
+    });
     
     if (infoElement) {
         infoElement.textContent = `Archivo seleccionado: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
@@ -160,7 +172,12 @@ function handleFileChange(e) {
     if (previewElement && fieldName === 'imagen') {
         const reader = new FileReader();
         reader.onload = function(e) {
-            previewElement.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 6px;">`;
+            previewElement.innerHTML = `
+                <div style="text-align: center;">
+                    <img src="${e.target.result}" alt="Nueva imagen seleccionada" style="max-width: 200px; max-height: 200px; border-radius: 6px; border: 2px solid #27ae60;">
+                    <p style="margin-top: 5px; font-size: 0.9rem; color: #27ae60; font-weight: 600;">Nueva imagen seleccionada</p>
+                </div>
+            `;
         };
         reader.readAsDataURL(file);
     }
@@ -169,11 +186,14 @@ function handleFileChange(e) {
         const reader = new FileReader();
         reader.onload = function(e) {
             previewElement.innerHTML = `
-                <video controls style="max-width: 200px; max-height: 150px; border-radius: 6px;">
-                    <source src="${e.target.result}" type="${file.type}">
-                    Tu navegador no soporta el elemento video.
-                </video>
-                <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">${file.name}</p>
+                <div style="text-align: center;">
+                    <video controls style="max-width: 200px; max-height: 150px; border-radius: 6px; border: 2px solid #27ae60;">
+                        <source src="${e.target.result}" type="${file.type}">
+                        Tu navegador no soporta el elemento video.
+                    </video>
+                    <p style="margin-top: 5px; font-size: 0.9rem; color: #27ae60; font-weight: 600;">Nuevo video seleccionado</p>
+                    <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">${file.name}</p>
+                </div>
             `;
         };
         reader.readAsDataURL(file);

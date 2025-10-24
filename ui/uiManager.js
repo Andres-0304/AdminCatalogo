@@ -201,10 +201,10 @@ export function clearForm() {
 
 // Función para limpiar previews
 export function clearPreviews() {
-    const imagePreview = document.getElementById('imagePreview');
-    const videoPreview = document.getElementById('videoPreview');
+    const imagePreview = document.getElementById('imagenPreview');
+    const videoPreview = document.getElementById('videosPreview');
     const imageInfo = document.getElementById('imagenInfo');
-    const videoInfo = document.getElementById('videoInfo');
+    const videoInfo = document.getElementById('videosInfo');
     
     if (imagePreview) imagePreview.innerHTML = '';
     if (videoPreview) videoPreview.innerHTML = '';
@@ -225,7 +225,7 @@ export function clearFileFields() {
 
 // Función para mostrar preview de imagen
 export function showImagePreview(imageUrl) {
-    const preview = document.getElementById('imagePreview');
+    const preview = document.getElementById('imagenPreview');
     if (!preview) return;
     
     if (imageUrl && imageUrl.trim() !== '') {
@@ -248,7 +248,7 @@ export function showImagePreview(imageUrl) {
 
 // Función para mostrar preview de video
 export function showVideoPreview(videoUrl) {
-    const preview = document.getElementById('videoPreview');
+    const preview = document.getElementById('videosPreview');
     if (!preview) return;
     
     if (videoUrl && videoUrl.trim() !== '') {
