@@ -95,17 +95,25 @@ async function handleFormSubmit(e) {
         // Manejar imagen
         const imageFile = formData.get('imagen');
         if (imageFile && imageFile.size > 0) {
-            console.log('Subiendo imagen...');
+            console.log('Subiendo nueva imagen...');
             productData.img = await uploadFile(imageFile);
+        } else if (currentEditingProduct && currentEditingProduct.img) {
+            // Mantener imagen existente si no se selecciona nueva
+            console.log('Manteniendo imagen existente:', currentEditingProduct.img);
+            productData.img = currentEditingProduct.img;
         }
         
         // Manejar video
         const videoFile = formData.get('videos');
         console.log('Video file:', videoFile);
         if (videoFile && videoFile.size > 0) {
-            console.log('Subiendo video...', videoFile.name, videoFile.size, 'bytes', videoFile.type);
+            console.log('Subiendo nuevo video...', videoFile.name, videoFile.size, 'bytes', videoFile.type);
             productData.videos = await uploadFile(videoFile);
             console.log('Video subido exitosamente:', productData.videos);
+        } else if (currentEditingProduct && currentEditingProduct.videos) {
+            // Mantener video existente si no se selecciona nuevo
+            console.log('Manteniendo video existente:', currentEditingProduct.videos);
+            productData.videos = currentEditingProduct.videos;
         } else {
             console.log('No hay video para subir');
         }

@@ -210,7 +210,12 @@ export function showImagePreview(imageUrl) {
         try {
             // Validar URL
             new URL(imageUrl);
-            preview.innerHTML = `<img src="${imageUrl}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 6px;">`;
+            preview.innerHTML = `
+                <div style="text-align: center;">
+                    <img src="${imageUrl}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 6px; border: 2px solid #e9ecef;">
+                    <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Imagen actual</p>
+                </div>
+            `;
         } catch (error) {
             preview.innerHTML = '<p style="color: #e74c3c;">URL de imagen inválida</p>';
         }
@@ -229,15 +234,18 @@ export function showVideoPreview(videoUrl) {
             // Validar URL
             new URL(videoUrl);
             preview.innerHTML = `
-                <video controls style="max-width: 200px; max-height: 150px; border-radius: 6px;">
-                    <source src="${videoUrl}" type="video/mp4">
-                    <source src="${videoUrl}" type="video/webm">
-                    <source src="${videoUrl}" type="video/ogg">
-                    Tu navegador no soporta el elemento video.
-                </video>
-                <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">
-                    <a href="${videoUrl}" target="_blank" style="color: #3498db; text-decoration: none;">Abrir video en nueva pestaña</a>
-                </p>
+                <div style="text-align: center;">
+                    <video controls style="max-width: 200px; max-height: 150px; border-radius: 6px; border: 2px solid #e9ecef;">
+                        <source src="${videoUrl}" type="video/mp4">
+                        <source src="${videoUrl}" type="video/webm">
+                        <source src="${videoUrl}" type="video/ogg">
+                        Tu navegador no soporta el elemento video.
+                    </video>
+                    <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Video actual</p>
+                    <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">
+                        <a href="${videoUrl}" target="_blank" style="color: #3498db; text-decoration: none;">Abrir video en nueva pestaña</a>
+                    </p>
+                </div>
             `;
         } catch (error) {
             preview.innerHTML = '<p style="color: #e74c3c;">URL de video inválida</p>';
@@ -261,9 +269,19 @@ export function fillFormWithProduct(product) {
     // Mostrar previews si existen
     if (product.img) {
         showImagePreview(product.img);
+        // Mostrar información de la imagen existente
+        const imageInfo = document.getElementById('imagenInfo');
+        if (imageInfo) {
+            imageInfo.textContent = `Imagen actual: ${product.img.split('/').pop()}`;
+        }
     }
     if (product.videos) {
         showVideoPreview(product.videos);
+        // Mostrar información del video existente
+        const videoInfo = document.getElementById('videoInfo');
+        if (videoInfo) {
+            videoInfo.textContent = `Video actual: ${product.videos.split('/').pop()}`;
+        }
     }
     
     // Cambiar texto del botón
