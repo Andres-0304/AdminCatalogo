@@ -16,15 +16,14 @@ Panel de administración para gestionar productos con Firebase Firestore y Cloud
 
 ```
 AdminCatalogo/
-├── index.html          # Página principal
-├── style.css           # Estilos del panel
-├── admin.js            # Lógica JavaScript
-├── api/                # Vercel Functions
-│   ├── upload.js       # Función para subir archivos
-│   └── delete.js       # Función para eliminar archivos
-├── package.json        # Configuración del proyecto
-├── vercel.json         # Configuración de Vercel
-└── README.md           # Este archivo
+├── index.html          
+├── style.css           
+├── admin.js           
+├── api/                
+│   ├── upload.js       
+│   └── delete.js       
+├── package.json        
+└── Rvercel.json        
 ```
 
 ## Instalación y Uso
