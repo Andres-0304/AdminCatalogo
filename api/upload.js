@@ -32,6 +32,9 @@ module.exports = async (req, res) => {
     return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   }
 
+  // Log para debugging
+  console.log('Upload function called:', req.method, req.url);
+
   try {
     const { fileData, fileName, contentType } = req.body;
 
