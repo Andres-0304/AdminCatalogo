@@ -2,8 +2,8 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { v4: uuidv4 } = require('uuid');
 
 // Configuración de Cloudflare R2
-const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID || 'c60c478cd5b8bf04641f5c466cb3f793';
-const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY || '449553cc789b51ec983221c316d9ec6e3f89f9dcfd4cba8e5fa62ad031c70281';
+const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;
+const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
 const R2_ENDPOINT = process.env.R2_ENDPOINT || 'https://14260027a130bb3910678a34f010dcb7.r2.cloudflarestorage.com';
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME || 'servilletas-navidenas';
 
@@ -30,6 +30,15 @@ module.exports = async (req, res) => {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method Not Allowed' });
+  }
+
+  // Validar que las credenciales estén configuradas
+  if (!R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY) {
+    console.error('Credenciales de R2 no configuradas');
+    return res.status(500).json({ 
+      success: false, 
+      error: 'Configuración de servidor incompleta' 
+    });
   }
 
   // Log para debugging

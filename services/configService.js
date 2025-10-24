@@ -16,16 +16,7 @@ export async function getFirebaseConfig() {
     } catch (error) {
         console.error('Error obteniendo configuración de Firebase:', error);
         
-        // Fallback: usar configuración pública (solo para desarrollo)
-        // En producción, esto debería fallar si no hay configuración segura
-        return {
-            apiKey: "AIzaSyA3OvglK2Qcmi20kBp_q--zwesFE8c77IM",
-            authDomain: "servilletasnavidenas.firebaseapp.com",
-            projectId: "servilletasnavidenas",
-            storageBucket: "servilletasnavidenas.firebasestorage.app",
-            messagingSenderId: "484584775953",
-            appId: "1:484584775953:web:817077cb2f184b69a92cb0",
-            measurementId: "G-8QC2ZXW0DC"
-        };
+        // En producción, no debe haber fallback con credenciales hardcodeadas
+        throw new Error('No se pudo obtener la configuración de Firebase. Verifica que las variables de entorno estén configuradas correctamente.');
     }
 }
