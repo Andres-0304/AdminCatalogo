@@ -12,6 +12,10 @@
         <header class="header">
             <h1>Panel Administrador de Catálogo</h1>
             <p>Gestión de productos con Firebase</p>
+            <div class="user-info">
+                <span id="userEmail" class="user-email"></span>
+                <button id="logoutBtn" class="logout-button">Cerrar Sesión</button>
+            </div>
         </header>
 
         <main class="main-content">
@@ -100,6 +104,7 @@
     </div>
 
     <!-- Firebase SDK -->
+    <script src="js/authService.js"></script>
     <script type="module" src="admin.js"></script>
 </body>
 </html>
