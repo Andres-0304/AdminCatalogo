@@ -68,7 +68,7 @@ export function createProductCard(product) {
         <div class="product-info">
             <h3 class="product-name">${product.nombre}</h3>
             <p class="product-id">ID: ${product.id}</p>
-            <p class="product-price">${product.precio}</p>
+            <p class="product-price">${product.precio || 'S/. 0.00'}</p>
             <p class="product-desc">${product.desc}</p>
             <p class="product-includes">Incluye: ${product.incluye}</p>
             ${videoIndicator}
@@ -229,7 +229,11 @@ export function showVideoPreview(videoUrl) {
 export function fillFormWithProduct(product) {
     document.getElementById('productName').value = product.nombre || '';
     document.getElementById('productDesc').value = product.desc || '';
-    document.getElementById('productPrice').value = product.precio || '';
+    
+    // Extraer solo el número del precio (remover "S/. " si existe)
+    const precioValue = product.precio ? product.precio.replace('S/. ', '') : '';
+    document.getElementById('productPrice').value = precioValue;
+    
     document.getElementById('productIncludes').value = product.incluye || '';
     
     // Mostrar previews si existen

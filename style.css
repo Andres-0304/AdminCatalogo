@@ -362,6 +362,53 @@ body {
     position: relative;
 }
 
+/* Estilos para el campo de precio con moneda */
+.price-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    overflow: hidden;
+}
+
+.currency-symbol {
+    background: #f8f9fa;
+    padding: 12px 15px;
+    border-right: 1px solid #ddd;
+    color: #555;
+    font-weight: 600;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.price-input-container input {
+    border: none;
+    outline: none;
+    padding: 12px 15px;
+    flex: 1;
+    font-size: 1rem;
+    background: transparent;
+}
+
+.price-input-container input:focus {
+    box-shadow: none;
+}
+
+.price-input-container:focus-within {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Estilos para el precio en las tarjetas de productos */
+.product-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #27ae60;
+    margin: 10px 0;
+}
+
 .product-info {
     padding: 20px;
 }

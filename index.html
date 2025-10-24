@@ -30,8 +30,11 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="productPrice">Precio</label>
-                            <input type="number" id="productPrice" name="precio" step="0.01" required>
+                            <label for="productPrice">Precio (S/.)</label>
+                            <div class="price-input-container">
+                                <span class="currency-symbol">S/.</span>
+                                <input type="number" id="productPrice" name="precio" step="0.01" min="0" required placeholder="0.00">
+                            </div>
                         </div>
                         
                         <div class="form-group full-width">

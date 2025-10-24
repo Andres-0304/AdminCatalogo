@@ -81,7 +81,7 @@ async function handleFormSubmit(e) {
         const productData = {
             nombre: formData.get('nombre'),
             desc: formData.get('desc'),
-            precio: formData.get('precio'),
+            precio: `S/. ${formData.get('precio')}`,
             incluye: formData.get('incluye'),
             fechaCreacion: new Date().toISOString()
         };
