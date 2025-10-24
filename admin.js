@@ -237,12 +237,32 @@ window.deleteProduct = function(firestoreId) {
                     
                     if (product) {
                         // Eliminar archivos asociados
+                        let filesDeleted = 0;
+                        let totalFiles = 0;
+                        
                         if (product.img) {
-                            await deleteFile(product.img);
+                            totalFiles++;
+                            try {
+                                await deleteFile(product.img);
+                                filesDeleted++;
+                                console.log('Imagen eliminada exitosamente');
+                            } catch (error) {
+                                console.error('Error eliminando imagen:', error);
+                            }
                         }
+                        
                         if (product.videos) {
-                            await deleteFile(product.videos);
+                            totalFiles++;
+                            try {
+                                await deleteFile(product.videos);
+                                filesDeleted++;
+                                console.log('Video eliminado exitosamente');
+                            } catch (error) {
+                                console.error('Error eliminando video:', error);
+                            }
                         }
+                        
+                        console.log(`Archivos eliminados: ${filesDeleted}/${totalFiles}`);
                     }
                     
                     // Eliminar de la base de datos

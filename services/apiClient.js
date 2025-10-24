@@ -124,8 +124,9 @@ export async function deleteFile(url) {
             }
             
         } catch (deleteError) {
-            console.log('Error eliminando archivo de R2, marcando como eliminado:', deleteError);
-            return false; // Marcar como eliminado aunque falle la eliminación real
+            console.error('Error eliminando archivo de R2:', deleteError);
+            // No marcar como eliminado si falla, para que el usuario sepa que hay un problema
+            throw new Error(`Error eliminando archivo: ${deleteError.message}`);
         }
         
     } catch (error) {
