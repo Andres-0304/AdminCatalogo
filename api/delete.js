@@ -1,10 +1,10 @@
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
 // Configuración de Cloudflare R2
-const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;
-const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
-const R2_ENDPOINT = process.env.R2_ENDPOINT;
-const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
+const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID || 'c60c478cd5b8bf04641f5c466cb3f793';
+const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY || '449553cc789b51ec983221c316d9ec6e3f89f9dcfd4cba8e5fa62ad031c70281';
+const R2_ENDPOINT = process.env.R2_ENDPOINT || 'https://14260027a130bb3910678a34f010dcb7.r2.cloudflarestorage.com';
+const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME || 'servilletas-navidenas';
 
 const s3Client = new S3Client({
   region: 'auto',
