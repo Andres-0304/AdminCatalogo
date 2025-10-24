@@ -175,8 +175,8 @@ export function clearForm() {
         form.reset();
     }
     
-    // Limpiar previews
-    clearPreviews();
+    // Limpiar campos de archivos y previews
+    clearFileFields();
     
     // Resetear estado de edición
     window.currentEditingProduct = null;
@@ -185,6 +185,17 @@ export function clearForm() {
     const submitButton = document.querySelector('button[type="submit"]');
     if (submitButton) {
         submitButton.textContent = 'Agregar Producto';
+    }
+    
+    // Restaurar labels originales
+    const imageLabel = document.querySelector('label[for="productImage"]');
+    const videoLabel = document.querySelector('label[for="productVideo"]');
+    
+    if (imageLabel) {
+        imageLabel.textContent = 'Imagen del Producto';
+    }
+    if (videoLabel) {
+        videoLabel.textContent = 'Video del Producto (Opcional)';
     }
 }
 
@@ -199,6 +210,17 @@ export function clearPreviews() {
     if (videoPreview) videoPreview.innerHTML = '';
     if (imageInfo) imageInfo.textContent = '';
     if (videoInfo) videoInfo.textContent = '';
+}
+
+// Función para limpiar campos de archivos
+export function clearFileFields() {
+    const imageInput = document.getElementById('productImage');
+    const videoInput = document.getElementById('productVideo');
+    
+    if (imageInput) imageInput.value = '';
+    if (videoInput) videoInput.value = '';
+    
+    clearPreviews();
 }
 
 // Función para mostrar preview de imagen
@@ -288,5 +310,16 @@ export function fillFormWithProduct(product) {
     const submitButton = document.querySelector('button[type="submit"]');
     if (submitButton) {
         submitButton.textContent = 'Actualizar Producto';
+    }
+    
+    // Actualizar labels para indicar que son opcionales en modo edición
+    const imageLabel = document.querySelector('label[for="productImage"]');
+    const videoLabel = document.querySelector('label[for="productVideo"]');
+    
+    if (imageLabel) {
+        imageLabel.textContent = 'Imagen del Producto (Opcional - mantiene la actual si no se selecciona)';
+    }
+    if (videoLabel) {
+        videoLabel.textContent = 'Video del Producto (Opcional - mantiene el actual si no se selecciona)';
     }
 }

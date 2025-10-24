@@ -94,6 +94,12 @@ async function handleFormSubmit(e) {
         
         // Manejar imagen
         const imageFile = formData.get('imagen');
+        
+        // Validar imagen solo para productos nuevos
+        if (!currentEditingProduct && (!imageFile || imageFile.size === 0)) {
+            showNotification('La imagen es requerida para nuevos productos', 'error');
+            return;
+        }
         if (imageFile && imageFile.size > 0) {
             console.log('Subiendo nueva imagen...');
             productData.img = await uploadFile(imageFile);
