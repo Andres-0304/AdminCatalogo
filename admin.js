@@ -31,7 +31,14 @@ async function initializeApp() {
     try {
         // Cargar productos y configurar suscripción
         await loadProducts((products) => {
+            // Almacenar productos globalmente para acceso desde funciones
+            window.currentProducts = products;
+            
+            // Renderizar productos
             renderProducts(products);
+            
+            // Actualizar contador de productos
+            updateProductCounter(products.length);
         });
         
         // Configurar event listeners
@@ -143,8 +150,12 @@ function handleFileChange(e) {
 
 // Función para editar producto
 window.editProduct = function(firestoreId) {
+    console.log('Función editProduct llamada con ID:', firestoreId);
     const products = getCurrentProducts();
+    console.log('Productos disponibles:', products.length);
+    
     const product = products.find(p => p.firestoreId === firestoreId);
+    console.log('Producto encontrado:', product);
     
     if (product) {
         currentEditingProduct = product;
@@ -152,11 +163,16 @@ window.editProduct = function(firestoreId) {
         
         // Scroll al formulario
         document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+    } else {
+        console.error('Producto no encontrado para editar');
+        showNotification('Error: Producto no encontrado', 'error');
     }
 };
 
 // Función para eliminar producto
 window.deleteProduct = function(firestoreId) {
+    console.log('Función deleteProduct llamada con ID:', firestoreId);
+    
     showModal(
         'Confirmar Eliminación',
         '¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.',
@@ -253,8 +269,16 @@ function setupImageHandlers() {
 
 // Función para obtener productos actuales (necesaria para las funciones globales)
 function getCurrentProducts() {
-    // Esta función será implementada por firebaseService
-    return [];
+    // Obtener productos desde firebaseService
+    return window.currentProducts || [];
+}
+
+// Función para actualizar el contador de productos
+function updateProductCounter(count) {
+    const counterElement = document.getElementById('productsCount');
+    if (counterElement) {
+        counterElement.textContent = `${count} productos`;
+    }
 }
 
 // Limpiar al cerrar la página
