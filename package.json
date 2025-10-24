@@ -11,14 +11,20 @@
     "test": "echo 'Ejecuta las pruebas en el navegador abriendo tests/upload.test.js'",
     "test:semantic-id": "echo 'Ejecuta las pruebas de generateSemanticId en el navegador'"
   },
-  "keywords": ["admin", "catalogo", "firebase", "cloudflare-r2", "crud", "vercel"],
+  "keywords": [
+    "admin",
+    "catalogo",
+    "firebase",
+    "cloudflare-r2",
+    "crud",
+    "vercel"
+  ],
   "author": "Andre",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.474.0",
-    "uuid": "^9.0.1",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
-  },
-  "devDependencies": {}
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^9.0.1"
+  }
 }
