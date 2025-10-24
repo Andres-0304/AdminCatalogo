@@ -1,0 +1,20 @@
+{
+  "name": "admincatalogo",
+  "version": "1.0.0",
+  "description": "Panel Administrador de Catálogo con Firebase Firestore Database y Cloudflare R2",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -p 3000",
+    "dev": "npx serve . -p 3000",
+    "build": "echo 'No build step required'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["admin", "catalogo", "firebase", "cloudflare-r2", "crud", "vercel"],
+  "author": "Andre",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.474.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {}
+}

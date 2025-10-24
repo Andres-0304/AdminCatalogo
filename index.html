@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador de Catálogo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Panel Administrador de Catálogo</h1>
+            <p>Gestión de productos con Firebase</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Formulario de productos -->
+            <section class="form-section">
+                <h2>Gestionar Producto</h2>
+                <form id="productForm" class="product-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="productName">Nombre</label>
+                            <input type="text" id="productName" name="nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productPrice">Precio</label>
+                            <input type="number" id="productPrice" name="precio" step="0.01" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="productDesc">Descripción</label>
+                            <textarea id="productDesc" name="desc" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="productIncludes">Incluye</label>
+                            <textarea id="productIncludes" name="incluye" rows="2" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productImage">Imagen del Producto</label>
+                            <input type="file" id="productImage" name="imagen" accept="image/*" required>
+                            <div class="file-info" id="imageInfo"></div>
+                            <div class="image-preview" id="imagePreview"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productVideo">Video del Producto (Opcional)</label>
+                            <input type="file" id="productVideo" name="video" accept="video/*">
+                            <div class="file-info" id="videoInfo"></div>
+                            <div class="video-preview" id="videoPreview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" id="submitBtn" class="btn btn-primary">Agregar Producto</button>
+                        <button type="button" id="cancelBtn" class="btn btn-secondary" style="display: none;">Cancelar Edición</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Lista de productos -->
+            <section class="products-section">
+                <div class="section-header">
+                    <h2>Productos del Catálogo</h2>
+                    <div class="products-count">
+                        <span id="productsCount">0 productos</span>
+                    </div>
+                </div>
+                
+                <div class="loading" id="loadingProducts" style="display: none;">
+                    <p>Cargando productos...</p>
+                </div>
+                
+                <div class="products-grid" id="productsGrid">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirmar Acción</h3>
+            <p id="confirmMessage"></p>
+            <div class="modal-actions">
+                <button id="confirmBtn" class="btn btn-danger">Confirmar</button>
+                <button id="cancelModalBtn" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensajes de notificación -->
+    <div id="notification" class="notification">
+        <span id="notificationMessage"></span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
