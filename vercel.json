@@ -2,16 +2,24 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
       "src": "api/upload.js",
       "use": "@vercel/node"
     },
     {
       "src": "api/delete.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "style.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "admin.js",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -23,11 +31,5 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "env": {
-    "R2_ACCESS_KEY_ID": "c60c478cd5b8bf04641f5c466cb3f793",
-    "R2_SECRET_ACCESS_KEY": "449553cc789b51ec983221c316d9ec6e3f89f9dcfd4cba8e5fa62ad031c70281",
-    "R2_ENDPOINT": "https://14260027a130bb3910678a34f010dcb7.r2.cloudflarestorage.com",
-    "R2_BUCKET_NAME": "servilletas-navidenas"
-  }
+  ]
 }
