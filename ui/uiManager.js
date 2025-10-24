@@ -27,7 +27,19 @@ export function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
-    const videoIndicator = product.videos ? '<div class="video-indicator">📹 Video disponible</div>' : '';
+    const videoIndicator = product.videos ? `
+        <div class="video-indicator">
+            <video controls style="max-width: 100%; max-height: 200px; border-radius: 6px; margin-top: 10px;">
+                <source src="${product.videos}" type="video/mp4">
+                <source src="${product.videos}" type="video/webm">
+                <source src="${product.videos}" type="video/ogg">
+                Tu navegador no soporta el elemento video.
+            </video>
+            <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">
+                <a href="${product.videos}" target="_blank" style="color: #3498db; text-decoration: none;">Abrir video en nueva pestaña</a>
+            </p>
+        </div>
+    ` : '';
     
     // Mostrar imagen del producto
     let imageContent;
@@ -216,7 +228,17 @@ export function showVideoPreview(videoUrl) {
         try {
             // Validar URL
             new URL(videoUrl);
-            preview.innerHTML = `<a href="${videoUrl}" target="_blank" style="color: #3498db; text-decoration: none;">Ver video</a>`;
+            preview.innerHTML = `
+                <video controls style="max-width: 200px; max-height: 150px; border-radius: 6px;">
+                    <source src="${videoUrl}" type="video/mp4">
+                    <source src="${videoUrl}" type="video/webm">
+                    <source src="${videoUrl}" type="video/ogg">
+                    Tu navegador no soporta el elemento video.
+                </video>
+                <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">
+                    <a href="${videoUrl}" target="_blank" style="color: #3498db; text-decoration: none;">Abrir video en nueva pestaña</a>
+                </p>
+            `;
         } catch (error) {
             preview.innerHTML = '<p style="color: #e74c3c;">URL de video inválida</p>';
         }

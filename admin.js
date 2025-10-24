@@ -101,9 +101,13 @@ async function handleFormSubmit(e) {
         
         // Manejar video
         const videoFile = formData.get('videos');
+        console.log('Video file:', videoFile);
         if (videoFile && videoFile.size > 0) {
-            console.log('Subiendo video...');
+            console.log('Subiendo video...', videoFile.name, videoFile.size, 'bytes', videoFile.type);
             productData.videos = await uploadFile(videoFile);
+            console.log('Video subido exitosamente:', productData.videos);
+        } else {
+            console.log('No hay video para subir');
         }
         
         if (currentEditingProduct) {
@@ -143,6 +147,20 @@ function handleFileChange(e) {
         const reader = new FileReader();
         reader.onload = function(e) {
             previewElement.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 6px;">`;
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    if (previewElement && fieldName === 'videos') {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewElement.innerHTML = `
+                <video controls style="max-width: 200px; max-height: 150px; border-radius: 6px;">
+                    <source src="${e.target.result}" type="${file.type}">
+                    Tu navegador no soporta el elemento video.
+                </video>
+                <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">${file.name}</p>
+            `;
         };
         reader.readAsDataURL(file);
     }
